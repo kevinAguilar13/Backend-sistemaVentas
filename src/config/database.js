@@ -1,7 +1,6 @@
 import { Pool } from "pg";
 import "dotenv/config";
 
-
 export const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -15,11 +14,13 @@ export const pool = new Pool({
 
 export async function conecctionDB() {
     try {
-        await pool.connect();
-        console.log("Conexión exitosa a la base de datos");
-    }
-    catch (error) {
-    console.error("Error al conectar a PostgreSQL:", error.message);
-    console.log(error);
+        const client = await pool.connect();
+
+        console.log("Conexión exitosa a PostgreSQL");
+
+        client.release();
+    } catch (error) {
+        console.error("Error al conectar a PostgreSQL:", error.message);
+        throw error;
     }
 }
