@@ -7,12 +7,17 @@ import categoriaRoutes from "./routes/categoriaRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import pedidoRoutes from "./routes/pedidoRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger.js";
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+
+// Swagger Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rutas
 app.use("/api/productos", productoRoutes);
