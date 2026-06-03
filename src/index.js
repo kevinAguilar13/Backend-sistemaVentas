@@ -9,11 +9,13 @@ import pedidoRoutes from "./routes/pedidoRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 // Swagger Documentation
