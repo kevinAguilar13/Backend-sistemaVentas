@@ -1,19 +1,13 @@
 import { Router } from "express";
-
-import {
-    getUsuarios,
-    getUsuario,
-    postUsuario,
-    putUsuario,
-    deleteUsuario
-} from "../controllers/usuarioController.js";
+import * as usuarioController from "../controllers/usuarioController.js";
+import { verificarToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-router.get("/", getUsuarios);
-router.get("/:id", getUsuario);
-router.post("/", postUsuario);
-router.put("/:id", putUsuario);
-router.delete("/:id", deleteUsuario);
+router.get("/", verificarToken, usuarioController.getUsuarios);
+router.get("/:id", verificarToken, usuarioController.getUsuario);
+router.post("/", verificarToken, usuarioController.postUsuario);
+router.put("/:id", verificarToken, usuarioController.putUsuario);
+router.delete("/:id", verificarToken, usuarioController.deleteUsuario);
 
 export default router;
