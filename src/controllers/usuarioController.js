@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import {
     obtenerUsuarios,
     obtenerUsuarioPorId,
@@ -21,22 +22,58 @@ export const getUsuario = async (req, res) => {
 };
 
 export const postUsuario = async (req, res) => {
+    try {
 
-    const usuario = await crearUsuario(req.body);
+        const datos = { ...req.body };
 
-    res.status(201).json(usuario);
+        datos.password = await bcrypt.hash(
+            datos.password,
+            10
+        );
+
+        const usuario = await crearUsuario(datos);
+
+        delete usuario.password;
+
+        res.status(201).json(usuario);
+
+    } catch (error) {
+        res.status(500).json({
+            mensaje: "Error al crear usuario",
+            error: error.message
+        });
+    }
 };
 
 export const putUsuario = async (req, res) => {
+    try {
 
-    const { id } = req.params;
+        const { id } = req.params;
 
-    const usuario = await actualizarUsuario(
-        id,
-        req.body
-    );
+        const datos = { ...req.body };
 
-    res.json(usuario);
+        if (datos.password) {
+            datos.password = await bcrypt.hash(
+                datos.password,
+                10
+            );
+        }
+
+        const usuario = await actualizarUsuario(
+            id,
+            datos
+        );
+
+        delete usuario.password;
+
+        res.json(usuario);
+
+    } catch (error) {
+        res.status(500).json({
+            mensaje: "Error al actualizar usuario",
+            error: error.message
+        });
+    }
 };
 
 export const deleteUsuario = async (req, res) => {
