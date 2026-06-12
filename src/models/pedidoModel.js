@@ -23,12 +23,8 @@ export const crearPedido = async (pedido) => {
 
     const {
         id_usuario,
-        id_direccion,
-        subtotal,
-        impuesto,
-        envio,
         total,
-        estado
+        estado = "Pendiente"
     } = pedido;
 
     const result = await pool.query(
@@ -36,25 +32,17 @@ export const crearPedido = async (pedido) => {
         INSERT INTO pedidos
         (
             id_usuario,
-            id_direccion,
-            subtotal,
-            impuesto,
-            envio,
             total,
             estado
         )
         VALUES
         (
-            $1,$2,$3,$4,$5,$6,$7
+            $1,$2,$3
         )
         RETURNING *
         `,
         [
             id_usuario,
-            id_direccion,
-            subtotal,
-            impuesto,
-            envio,
             total,
             estado
         ]
@@ -67,10 +55,6 @@ export const actualizarPedido = async (id, pedido) => {
 
     const {
         id_usuario,
-        id_direccion,
-        subtotal,
-        impuesto,
-        envio,
         total,
         estado
     } = pedido;
@@ -80,21 +64,13 @@ export const actualizarPedido = async (id, pedido) => {
         UPDATE pedidos
         SET
             id_usuario = $1,
-            id_direccion = $2,
-            subtotal = $3,
-            impuesto = $4,
-            envio = $5,
-            total = $6,
-            estado = $7
-        WHERE id_pedido = $8
+            total = $2,
+            estado = $3
+        WHERE id_pedido = $4
         RETURNING *
         `,
         [
             id_usuario,
-            id_direccion,
-            subtotal,
-            impuesto,
-            envio,
             total,
             estado,
             id

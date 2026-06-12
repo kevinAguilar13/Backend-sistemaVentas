@@ -12,8 +12,7 @@ export const obtenerProductos = async () => {
 
 export const obtenerProductoPorId = async (id) => {
     const result = await pool.query(
-        `SELECT * FROM productos
-         WHERE id_producto = $1`,
+        `SELECT * FROM productos WHERE id_producto = $1`,
         [id]
     );
 
@@ -26,9 +25,10 @@ export const crearProducto = async (producto) => {
         id_categoria,
         nombre,
         descripcion,
-        sku,
         precio,
-        stock
+        stock,
+        imagen,
+        estado = true
     } = producto;
 
     const result = await pool.query(
@@ -38,13 +38,14 @@ export const crearProducto = async (producto) => {
             id_categoria,
             nombre,
             descripcion,
-            sku,
             precio,
-            stock
+            stock,
+            imagen,
+            estado
         )
         VALUES
         (
-            $1,$2,$3,$4,$5,$6
+            $1,$2,$3,$4,$5,$6,$7
         )
         RETURNING *
         `,
@@ -52,9 +53,10 @@ export const crearProducto = async (producto) => {
             id_categoria,
             nombre,
             descripcion,
-            sku,
             precio,
-            stock
+            stock,
+            imagen,
+            estado
         ]
     );
 
@@ -67,9 +69,10 @@ export const actualizarProducto = async (id, producto) => {
         id_categoria,
         nombre,
         descripcion,
-        sku,
         precio,
-        stock
+        stock,
+        imagen,
+        estado
     } = producto;
 
     const result = await pool.query(
@@ -79,19 +82,21 @@ export const actualizarProducto = async (id, producto) => {
             id_categoria = $1,
             nombre = $2,
             descripcion = $3,
-            sku = $4,
-            precio = $5,
-            stock = $6
-        WHERE id_producto = $7
+            precio = $4,
+            stock = $5,
+            imagen = $6,
+            estado = $7
+        WHERE id_producto = $8
         RETURNING *
         `,
         [
             id_categoria,
             nombre,
             descripcion,
-            sku,
             precio,
             stock,
+            imagen,
+            estado,
             id
         ]
     );

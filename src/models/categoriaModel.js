@@ -21,8 +21,7 @@ export const crearCategoria = async (categoria) => {
 
     const {
         nombre,
-        descripcion,
-        estado
+        descripcion
     } = categoria;
 
     const result = await pool.query(
@@ -30,19 +29,17 @@ export const crearCategoria = async (categoria) => {
         INSERT INTO categorias
         (
             nombre,
-            descripcion,
-            estado
+            descripcion
         )
         VALUES
         (
-            $1,$2,$3
+            $1,$2
         )
         RETURNING *
         `,
         [
             nombre,
-            descripcion,
-            estado
+            descripcion
         ]
     );
 
@@ -53,8 +50,7 @@ export const actualizarCategoria = async (id, categoria) => {
 
     const {
         nombre,
-        descripcion,
-        estado
+        descripcion
     } = categoria;
 
     const result = await pool.query(
@@ -62,15 +58,13 @@ export const actualizarCategoria = async (id, categoria) => {
         UPDATE categorias
         SET
             nombre = $1,
-            descripcion = $2,
-            estado = $3
-        WHERE id_categoria = $4
+            descripcion = $2
+        WHERE id_categoria = $3
         RETURNING *
         `,
         [
             nombre,
             descripcion,
-            estado,
             id
         ]
     );

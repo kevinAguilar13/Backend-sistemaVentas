@@ -1,10 +1,17 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { loginUsuario } from "../models/authModel.js";
 
 export const login = async (req, res) => {
     try {
 
         const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({
+                mensaje: "Email y contraseña son requeridos"
+            });
+        }
 
         const usuario = await loginUsuario(email);
 
@@ -25,10 +32,21 @@ export const login = async (req, res) => {
             });
         }
 
+        const token = jwt.sign(
+            {
+                id_usuario: usuario.id_usuario,
+                email: usuario.email,
+                id_rol: usuario.id_rol
+            },
+            process.env.JWT_SECRET || "secret_key",
+            { expiresIn: "24h" }
+        );
+
         delete usuario.password;
 
         res.json({
             mensaje: "Login exitoso",
+            token,
             usuario
         });
 

@@ -6,6 +6,7 @@ import productoRoutes from "./routes/productoRoutes.js";
 import categoriaRoutes from "./routes/categoriaRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import pedidoRoutes from "./routes/pedidoRoutes.js";
+import detallePedidoRoutes from "./routes/detallePedidoRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger.js";
@@ -26,6 +27,7 @@ app.use("/api/productos", productoRoutes);
 app.use("/api/categorias", categoriaRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/pedidos", pedidoRoutes);
+app.use("/api/detalle-pedido", detallePedidoRoutes);
 app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
@@ -37,6 +39,9 @@ const startServer = async () => {
         app.listen(PORT, () => {
             console.log(
                 `Servidor corriendo en http://localhost:${PORT}`
+            );
+            console.log(
+                `Documentación Swagger: http://localhost:${PORT}/api-docs`
             );
         });
     } catch (error) {
