@@ -1,4 +1,7 @@
+import dotenv from "dotenv";
 import swaggerJSDoc from "swagger-jsdoc";
+
+dotenv.config();
 
 const options = {
     definition: {
@@ -6,16 +9,20 @@ const options = {
         info: {
             title: "API Sistema de Ventas",
             version: "1.0.0",
-            description: "Documentación de la API del Sistema de Ventas"
+            description: "Documentacion de la API del Sistema de Ventas"
         },
         servers: [
             {
-                url: "http://localhost:3000",
-                description: "Servidor de desarrollo"
+                url: process.env.LOCAL_URL,
+                description: "Servidor Local"
+            },
+            {
+                url: process.env.RENDER_URL,
+                description: "Servidor Produccion"
             }
         ]
     },
-    apis: ["./src/routes/*.js"]
+    apis: ["./routes/*.js"]
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
