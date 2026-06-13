@@ -57,13 +57,11 @@ export const crearUsuario = async (usuario) => {
 
 export const actualizarUsuario = async (id, usuario) => {
 
-    const {
-        id_rol,
-        nombre,
-        apellido,
-        email,
-        password
-    } = usuario;
+    const usuarioActual = await obtenerUsuarioPorId(id);
+
+    if (!usuarioActual) {
+        return null;
+    }
 
     const result = await pool.query(
         `
@@ -78,18 +76,17 @@ export const actualizarUsuario = async (id, usuario) => {
         RETURNING *
         `,
         [
-            id_rol,
-            nombre,
-            apellido,
-            email,
-            password,
+            usuario.id_rol ?? usuarioActual.id_rol,
+            usuario.nombre ?? usuarioActual.nombre,
+            usuario.apellido ?? usuarioActual.apellido,
+            usuario.email ?? usuarioActual.email,
+            usuario.password ?? usuarioActual.password,
             id
         ]
     );
 
     return result.rows[0];
 };
-
 export const eliminarUsuario = async (id) => {
 
     const result = await pool.query(
