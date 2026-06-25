@@ -63,27 +63,29 @@ export const actualizarUsuario = async (id, usuario) => {
         return null;
     }
 
-    const result = await pool.query(
-        `
-        UPDATE usuarios
-        SET
-            id_rol = $1,
-            nombre = $2,
-            apellido = $3,
-            email = $4,
-            password = $5
-        WHERE id_usuario = $6
-        RETURNING *
-        `,
-        [
-            usuario.id_rol ?? usuarioActual.id_rol,
-            usuario.nombre ?? usuarioActual.nombre,
-            usuario.apellido ?? usuarioActual.apellido,
-            usuario.email ?? usuarioActual.email,
-            usuario.password ?? usuarioActual.password,
-            id
-        ]
-    );
+const result = await pool.query(
+    `
+    UPDATE usuarios
+    SET
+        id_rol = $1,
+        nombre = $2,
+        apellido = $3,
+        email = $4,
+        password = $5,
+        estado = $6
+    WHERE id_usuario = $7
+    RETURNING *
+    `,
+    [
+        usuario.id_rol ?? usuarioActual.id_rol,
+        usuario.nombre ?? usuarioActual.nombre,
+        usuario.apellido ?? usuarioActual.apellido,
+        usuario.email ?? usuarioActual.email,
+        usuario.password ?? usuarioActual.password,
+        usuario.estado ?? usuarioActual.estado,
+        id
+    ]
+);
 
     return result.rows[0];
 };
