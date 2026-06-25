@@ -5,6 +5,13 @@ const router = Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Usuarios
+ *   description: API para la gestión de usuarios
+ */
+
+/**
+ * @swagger
  * /api/usuarios:
  *   get:
  *     summary: Obtener todos los usuarios
@@ -25,11 +32,14 @@ router.get("/", usuarioController.getUsuarios);
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID del usuario
  *         schema:
  *           type: integer
  *     responses:
  *       200:
  *         description: Usuario encontrado
+ *       404:
+ *         description: Usuario no encontrado
  */
 router.get("/:id", usuarioController.getUsuario);
 
@@ -45,19 +55,31 @@ router.get("/:id", usuarioController.getUsuario);
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - id_rol
+ *               - nombre
+ *               - apellido
+ *               - email
+ *               - password
  *             properties:
  *               id_rol:
  *                 type: integer
+ *                 example: 1
  *               nombre:
  *                 type: string
+ *                 example: Kevin
  *               apellido:
  *                 type: string
+ *                 example: Aguilar
  *               email:
  *                 type: string
+ *                 example: kevin@gmail.com
  *               password:
  *                 type: string
+ *                 example: 123456
  *               estado:
  *                 type: boolean
+ *                 example: true
  *     responses:
  *       201:
  *         description: Usuario creado correctamente
@@ -74,11 +96,41 @@ router.post("/", usuarioController.postUsuario);
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID del usuario
  *         schema:
  *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_rol:
+ *                 type: integer
+ *                 example: 1
+ *               nombre:
+ *                 type: string
+ *                 example: Kevin
+ *               apellido:
+ *                 type: string
+ *                 example: Aguilar
+ *               email:
+ *                 type: string
+ *                 example: kevin@gmail.com
+ *               password:
+ *                 type: string
+ *                 example: 123456
+ *               estado:
+ *                 type: boolean
+ *                 example: true
  *     responses:
  *       200:
- *         description: Usuario actualizado
+ *         description: Usuario actualizado correctamente
+ *       404:
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error interno del servidor
  */
 router.put("/:id", usuarioController.putUsuario);
 
@@ -92,11 +144,14 @@ router.put("/:id", usuarioController.putUsuario);
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID del usuario
  *         schema:
  *           type: integer
  *     responses:
  *       200:
- *         description: Usuario eliminado
+ *         description: Usuario eliminado correctamente
+ *       404:
+ *         description: Usuario no encontrado
  */
 router.delete("/:id", usuarioController.deleteUsuario);
 
